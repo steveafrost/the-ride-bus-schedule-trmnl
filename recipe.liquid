@@ -1,0 +1,32 @@
+<div class="layout layout--col layout--left gap--space-between">
+  <div class="flex flex--col flex--left">
+
+    {% for departure in stops[0].departures | limit: 3 %}
+    {% assign routeId = departure.trip.route.route_id %}
+    <div class="flex flex--row">
+      {% if routeId == "27" %}
+      <img src="https://i.imgur.com/KRzyCIl.png" width="100px">
+      {% endif %}
+      {% if routeId == "28" %}
+      <img src="https://i.imgur.com/GmpwQ1t.png" width="100px">
+      {% endif %}
+      {% if routeId == "32" %}
+      <img src="https://i.imgur.com/YjRRARL.png" width="100px">
+      {% endif %}
+      <div class="flex flex--col flex--left">
+        <span class="label label--small label--inverted">Route {{routeId}}</span>
+        <span class="value value--small">{{departure.departure_time | date: "%I:%M %p"}}</span>
+      </div>
+    </div>
+
+    {% endfor %}
+  </div>
+
+  <div class="w--full b-h-gray-5"></div>
+</div>
+
+<div class="title_bar">
+  <img class="image" src="https://usetrmnl.com/images/plugins/trmnl--render.svg">
+  <span class="title">Bus Schedule</span>
+  <span class="instance">Pauline & South Maple</span>
+</div>
