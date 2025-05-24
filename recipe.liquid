@@ -1,32 +1,55 @@
-<div class="layout layout--col layout--left gap--space-between">
-  <div class="flex flex--col flex--left">
-
+<div class="layout layout--col layout--left">
+  <div class="flex flex--col flex--left gap--large">
     {% for departure in stops[0].departures | limit: 3 %}
-    {% assign routeId = departure.trip.route.route_id %}
-    <div class="flex flex--row">
-      {% if routeId == "27" %}
-      <img src="https://i.imgur.com/KRzyCIl.png" width="100px">
+
+    {% assign is27Meijer = false %}
+    {% assign is27TransitCenter = false %}
+    {% assign trip = departure.trip %}
+    {% assign routeId = trip.route.route_id %}
+    {% assign routeDirection = trip.direction_id %}
+
+    {% if routeId == "27" and routeDirection == 0 %}
+    {% assign is27Meijer = true %}
+    {% elsif routeId == "27" and routeDirection == 1 %}
+    {% assign is27TransitCenter = true %}
+    {% endif %}
+
+    <div class="flex flex--row gap--medium">
+      {% if is27Meijer %}
+      <img src="https://i.imgur.com/KRzyCIl.png" width="100px" />
       {% endif %}
-      {% if routeId == "28" %}
-      <img src="https://i.imgur.com/GmpwQ1t.png" width="100px">
+      {% if routeId == "28" or is27TransitCenter %}
+      <img src="https://i.imgur.com/GmpwQ1t.png" width="100px" />
       {% endif %}
       {% if routeId == "32" %}
-      <img src="https://i.imgur.com/YjRRARL.png" width="100px">
+      <img src="https://i.imgur.com/YjRRARL.png" width="100px" />
       {% endif %}
       <div class="flex flex--col flex--left">
-        <span class="label label--small label--inverted">Route {{routeId}}</span>
-        <span class="value value--small">{{departure.departure_time | date: "%I:%M %p"}}</span>
+        <div class="flex flex--row">
+          <span class="label label--small label--inverted">
+            Route {{routeId}}
+          </span>
+          <span class="label label--small">
+            {% if is27Meijer %}
+            -> Meijer
+            {% else %}
+            -> Transit Center
+            {% endif %}
+          </span>
+        </div>
+        <span class="value value--small">{{departure.departure_time | date: "%l:%M %P"}}</span>
       </div>
     </div>
-
     {% endfor %}
   </div>
+</div>
 
-  <div class="w--full b-h-gray-5"></div>
+<div class="mr--3 mb--2">
+  <p class="label label--small text--right">Updated at {{ "now" | date: "%s" | plus: trmnl.user.utc_offset | date: "%l:%M" }}</p>
 </div>
 
 <div class="title_bar">
   <img class="image" src="https://usetrmnl.com/images/plugins/trmnl--render.svg">
-  <span class="title">Bus Schedule</span>
+  <span class="title">Bus</span>
   <span class="instance">Pauline & South Maple</span>
 </div>
